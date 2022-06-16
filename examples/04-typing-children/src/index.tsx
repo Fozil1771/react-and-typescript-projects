@@ -1,3 +1,4 @@
+import React from 'react'
 import Application from './Application';
 import { render } from 'react-dom';
 import './style.scss';
