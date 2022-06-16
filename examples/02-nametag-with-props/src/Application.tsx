@@ -1,8 +1,22 @@
+import React, { FC } from 'react'
+
 type NameTagProps = {
   name: string;
 };
 
-const NameTag = ({ name }: NameTagProps) => {
+type ContrivedExampleProps = {
+  // Does not take any arguements. Does not return anything
+  onHover: () => void;
+
+  //Takes a number. Returns nothing (e.g undefined)
+  onChange: (id: number) => void;
+
+  // Takes an event that is based on clicking on a button.
+  // Returns nothing
+  onClick(event: React.MouseEvent<HTMLButtonElement>): void;
+}
+
+const NameTag: FC<NameTagProps> = ({ name }) => {
   return (
     <main>
       <header>
