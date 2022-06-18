@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { Dispatch, useReducer } from 'react';
 
 type PizzaData = {
   numberOfPeople: number;
@@ -27,7 +27,12 @@ const initialState: PizzaState = {
   pizzasNeeded: 2
 };
 
-const reducer = (state: any, action: any) => {
+type ActionTypes = {
+  type: 'UPDATE_NUMBER_OF_PEOPLE' | 'UPDATE_SLICES_PER_PERSON' | 'UPDATE_SLICES_PER_PIE',
+  payload: number;
+}
+
+const reducer = (state: PizzaState, action: ActionTypes) => {
   if (action.type === 'UPDATE_NUMBER_OF_PEOPLE') {
     return addPizzasNeededToPizzaData({
       ...state,
@@ -52,7 +57,7 @@ const reducer = (state: any, action: any) => {
   return state;
 };
 
-const Calculation = ({ count }: { count: any }) => {
+const Calculation = ({ count }: { count: number }) => {
   return (
     <section className="calculation">
       <p className="count">{count}</p>
@@ -61,9 +66,9 @@ const Calculation = ({ count }: { count: any }) => {
   );
 };
 
-const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
+const Calculator = ({ dispatch, state }: { state: PizzaState; dispatch: Dispatch<ActionTypes> }) => {
   return (
-    <form onSubmit={() => {}}>
+    <form onSubmit={() => { }}>
       <label htmlFor="number-of-people">Number of People</label>
       <input
         id="number-of-people"
@@ -72,7 +77,7 @@ const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
         onChange={(event) =>
           dispatch({
             type: 'UPDATE_NUMBER_OF_PEOPLE',
-            payload: event.target.value
+            payload: +event.target.value
           })
         }
       />
@@ -84,7 +89,7 @@ const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
         onChange={(event) =>
           dispatch({
             type: 'UPDATE_SLICES_PER_PERSON',
-            payload: event.target.value
+            payload: +event.target.value
           })
         }
       />
@@ -96,7 +101,7 @@ const Calculator = ({ dispatch, state }: { state: any; dispatch: any }) => {
         onChange={(event) =>
           dispatch({
             type: 'UPDATE_SLICES_PER_PIE',
-            payload: event.target.value
+            payload: +event.target.value
           })
         }
       />
