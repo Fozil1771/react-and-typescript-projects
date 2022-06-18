@@ -1,18 +1,27 @@
 import * as React from 'react';
 import { fetchDogFacts, DogFactType } from './dog-facts';
 
-const Form = () => {
+
+type FormProps = {
+  onSubmit: (num: number) => void;
+}
+
+const Form = ({ onSubmit }: FormProps) => {
+
+  const [value, setValue] = React.useState(1);
+
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        onSubmit(value)
       }}
     >
       <div className="fact-input">
         <label htmlFor="number-of-facts">Number of Dog Facts</label>
-        <input type="number" value="3" min="1" max="10" id="number-of-facts" />
+        <input type="number" value={value} onChange={e => setValue(+e.target.value)} min="1" max="10" id="number-of-facts" />
       </div>
-      <input type="submit" value="Fetch Dog Facts" />
+      <input type="submit" value="Dog fact fetch" />
     </form>
   );
 };
@@ -27,10 +36,20 @@ const Fact = ({ fact }: { fact: string }) => {
 };
 
 const Application = () => {
+  const [facts, setFacts] = React.useState<DogFactType[]>([]);
+
+  const handleFormSubmit = (num: number) => {
+    fetchDogFacts(num).then(facts => setFacts(facts))
+  }
+
   return (
     <main>
-      <Form />
-      <section></section>
+      <Form onSubmit={handleFormSubmit} />
+      <section>
+        {facts.map(fact => (
+          <Fact key={fact.id} fact={fact.fact} />
+        ))}
+      </section>
     </main>
   );
 };
